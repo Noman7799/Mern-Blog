@@ -6,6 +6,7 @@ import SignIn from "./Pages/SignIn"
 import SignUp from "./Pages/SignUp"
 import DashBoard from "./Pages/DashBoard"
 import Header from "./Components/Header"
+import Footer from "./Components/Footer"
 const App = () => {
   return (
    <>
@@ -18,6 +19,7 @@ const App = () => {
     <Route path="/signup" element={<SignUp />} />
     <Route path="/dashboard" element={<DashBoard />} />
    </Routes>
+   <Footer/>
    
    </>
   )

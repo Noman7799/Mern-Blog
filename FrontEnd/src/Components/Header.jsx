@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { IoIosSearch, IoMdMoon } from "react-icons/io";
 import { Button, TextInput } from "flowbite-react";
 import { RxHamburgerMenu } from "react-icons/rx";
+import Logo from "./Logo";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -15,15 +16,7 @@ const Header = () => {
   return (
     <nav className="bg-white dark:bg-gray-900  w-full z-20 top-0 start-0 border-b border-gray-200 dark:border-gray-600">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-        <Link
-          to="/"
-          className="self-center whitespace-nowrap text-sm sm:text-xl font-semibold dark:text-white"
-        >
-          <span className="px-2 rounded-lg py-1 text-white bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
-            Mahmoud's
-          </span>{" "}
-          Blog
-        </Link>
+       <Logo/>
         <form>
           <TextInput
             type="text"
