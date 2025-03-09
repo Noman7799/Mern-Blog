@@ -4,14 +4,7 @@ import bcrypt from "bcryptjs";
 export const signup = async (req, res) => {
   const { username, password, email } = req.body;
 
-  if (
-    !username ||
-    !password ||
-    !email ||
-    username.trim() === "" ||
-    password.trim() === "" ||
-    email.trim() === ""
-  ) {
+  if (!username || !password || !email || username.trim() === "" || password.trim() === "" || email.trim() === "") {
     return res.status(400).json({
       status: "fail",
       data: {
@@ -21,6 +14,17 @@ export const signup = async (req, res) => {
   }
 
   try {
+    const existingUser = await User.findOne({ $or: [{ email }, { username }] });
+
+    if (existingUser) {
+      return res.status(400).json({
+        status: "fail",
+        data: {
+          error: "User already exists. Please use a different email or username.",
+        },
+      });
+    }
+
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(password, salt);
 

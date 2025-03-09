@@ -9,7 +9,7 @@ import Header from "./Components/Header"
 import Footer from "./Components/Footer"
 const App = () => {
   return (
-   <>
+   <div className="container">
    <Header/>
    <Routes>
     <Route path="/" element={<Home />} />
@@ -21,7 +21,7 @@ const App = () => {
    </Routes>
    <Footer/>
    
-   </>
+   </div>
   )
 }
 

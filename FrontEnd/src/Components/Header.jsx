@@ -14,48 +14,41 @@ const Header = () => {
   };
 
   return (
-    <nav className="bg-white dark:bg-gray-900  w-full z-20 top-0 start-0 border-b border-gray-200 dark:border-gray-600">
+    <nav className="bg-white dark:bg-gray-900 w-full z-20 top-0 start-0 border-b border-gray-200 dark:border-gray-600">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-       <Logo/>
-        <form>
+        <Logo />
+
+        {/* Search Bar (Visible only on large screens) */}
+        <form className="hidden lg:block">
           <TextInput
             type="text"
             placeholder="Search ..."
             rightIcon={IoIosSearch}
-            className="hidden lg:block"
           />
         </form>
-        <Button
-          className="lg:hidden h-10 w-12 flex justify-center items-center rounded-lg"
-          color="gray"
-        >
-          <IoIosSearch size={18} />
-        </Button>
-        <div className="flex gap-5 justify-between items-center md:order-2">
+       
+        <div className="flex gap-5 items-center md:order-2">
           <Button className="w-12 h-10 hidden sm:block rounded-lg" color="gray">
             <IoMdMoon />
           </Button>
-          <Link to="/signin">
-            <Button
-              className="items-center flex rounded-lg"
-              gradientDuoTone="purpleToBlue"
-              outline
-            >
-              SignIn
-            </Button>
-          </Link>
-        </div>
-
-        <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+          <Link to="/signin" className="hidden sm:block">
+                <Button
+                  className="w-full flex items-center rounded-lg"
+                  gradientDuoTone="purpleToBlue"
+                  outline
+                >
+                  Sign In
+                </Button>
+              </Link>
           <button
             data-collapse-toggle="navbar-sticky"
             type="button"
-            className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+            className="inline-flex items-center p-2 w-8 h-8 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
             aria-controls="navbar-sticky"
             aria-expanded={isOpen}
             onClick={toggleMenu}
           >
-            <RxHamburgerMenu size={25} />
+            <RxHamburgerMenu size={20} />
           </button>
         </div>
 
@@ -100,6 +93,28 @@ const Header = () => {
                 }`}
               >
                 Projects
+              </Link>
+            </li>
+
+            <li className="block md:hidden py-2">
+              <form>
+                <TextInput
+                  type="text"
+                  placeholder="Search ..."
+                  rightIcon={IoIosSearch}
+                />
+              </form>
+            </li>
+
+            <li className="block md:hidden py-2">
+              <Link to="/signin">
+                <Button
+                  className="w-full flex items-center rounded-lg"
+                  gradientDuoTone="purpleToBlue"
+                  outline
+                >
+                  Sign In
+                </Button>
               </Link>
             </li>
           </ul>
