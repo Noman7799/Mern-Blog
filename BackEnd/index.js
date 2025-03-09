@@ -3,6 +3,10 @@ import cors from "cors";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 
+// Import routes
+import userRoutes from "./Routes/user.route.js"
+import authRoutes from "./Routes/auth.route.js";
+
 dotenv.config();
 const app = express();
 const port = process.env.PORT || 4000;
@@ -28,3 +32,8 @@ connectDB();
 app.listen(port, () => {
   console.log(`🚀 Server is running on port ${port}`);
 });
+
+// Routes
+
+app.use("/api/user", userRoutes);
+app.use("/api/auth", authRoutes);
