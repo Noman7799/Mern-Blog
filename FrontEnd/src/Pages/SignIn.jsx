@@ -4,6 +4,8 @@ import { RiLockPasswordFill } from "react-icons/ri";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import Logo from "../Components/Logo";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { signInStart, signInSuccess, signInFailure } from "../redux/user/userSlice";
 
 const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -11,9 +13,12 @@ const SignIn = () => {
     email: "",
     password: "",
   });
-  const [loading, setLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(null);
+
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  // Use Redux state for loading and error
+  const { loading, error } = useSelector((state) => state.user);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
@@ -21,15 +26,14 @@ const SignIn = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.password || !formData.email) {
-      setErrorMessage("Please fill all fields");
-      setLoading(true);
+    if (!formData.email || !formData.password) {
+      dispatch(signInFailure("Please fill all fields"));
       return;
     }
+
     try {
-      setLoading(true);
-      setErrorMessage(null);
-      const res = await fetch("/api/auth/Signin", {
+      dispatch(signInStart());
+      const res = await fetch("/api/auth/signin", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -38,33 +42,28 @@ const SignIn = () => {
       });
       const data = await res.json();
       if (data.status === "fail" || data.status === "error") {
-        setErrorMessage(data.data.error);
-        setFormData({ email: "", password: "" });
-        setLoading(true);
+        dispatch(signInFailure(data.data.error));
         return;
       }
 
-      setLoading(false);
       if (res.ok) {
+        dispatch(signInSuccess(data));
         navigate("/");
       }
     } catch (error) {
-      setErrorMessage("Failed to Sign in. Please try again later.");
-      setFormData({ email: "", password: "" });
-      setLoading(true);
+      dispatch(signInFailure("Failed to sign in. Please try again later."));
     }
   };
 
   useEffect(() => {
-    if (errorMessage) {
+    if (error) {
       const timer = setTimeout(() => {
-        setErrorMessage(null);
-        setLoading(false); 
+        dispatch(signInFailure(null)); // Clear error after 3 seconds
       }, 3000);
 
       return () => clearTimeout(timer);
     }
-  }, [errorMessage]);
+  }, [error, dispatch]);
 
   return (
     <div className="parent py-5 md:h-screen flex flex-col justify-center gap-5 items-center md:flex-row">
@@ -160,13 +159,13 @@ const SignIn = () => {
           </p>
         </div>
 
-        {/* Error Message */}
-        {errorMessage && (
+        {/* Display Error Message */}
+        {error && (
           <div
             className="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
             role="alert"
           >
-            <span className="font-medium">Error: </span> {errorMessage}
+            <span className="font-medium">Error: </span> {error}
           </div>
         )}
       </form>
